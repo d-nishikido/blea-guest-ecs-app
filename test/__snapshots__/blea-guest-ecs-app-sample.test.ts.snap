@@ -1,0 +1,4652 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot test for BLEA ECS App Stacks 1`] = `
+{
+  "Outputs": {
+    "ExportsOutputFnGetAttEcsAppAlb74CC21B3DNSName9BF6DA64": {
+      "Export": {
+        "Name": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3DNSName9BF6DA64",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "EcsAppAlb74CC21B3",
+          "DNSName",
+        ],
+      },
+    },
+    "ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417": {
+      "Export": {
+        "Name": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "EcsAppAlb74CC21B3",
+          "LoadBalancerFullName",
+        ],
+      },
+    },
+    "ExportsOutputFnGetAttEcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0TargetGroupNameC50313E4": {
+      "Export": {
+        "Name": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0TargetGroupNameC50313E4",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "EcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0",
+          "TargetGroupName",
+        ],
+      },
+    },
+    "ExportsOutputFnGetAttEcsAppAlbTgUnHealthyHostCount0E9D8FD9Arn7BD25624": {
+      "Export": {
+        "Name": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlbTgUnHealthyHostCount0E9D8FD9Arn7BD25624",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "EcsAppAlbTgUnHealthyHostCount0E9D8FD9",
+          "Arn",
+        ],
+      },
+    },
+    "ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5": {
+      "Export": {
+        "Name": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "EcsAppServiceABC8901F",
+          "Name",
+        ],
+      },
+    },
+    "ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF": {
+      "Export": {
+        "Name": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+      },
+      "Value": {
+        "Ref": "DatastoreAuroraCluster2FE23DD5",
+      },
+    },
+    "ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68": {
+      "Export": {
+        "Name": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+      },
+      "Value": {
+        "Ref": "EcsAppCluster7C7DF57B",
+      },
+    },
+    "ExportsOutputRefMonitoringAlarmTopicAF62D4F1C969DD35": {
+      "Export": {
+        "Name": "Dev-BLEAEcsApp:ExportsOutputRefMonitoringAlarmTopicAF62D4F1C969DD35",
+      },
+      "Value": {
+        "Ref": "MonitoringAlarmTopicAF62D4F1",
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "CMK56817A4C": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "BLEA Guest Sample: CMK for EcsApp",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Encrypt*",
+                "kms:Decrypt*",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:Describe*",
+              ],
+              "Condition": {
+                "ArnLike": {
+                  "kms:EncryptionContext:aws:logs:arn": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:aws:logs:ap-northeast-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":*",
+                      ],
+                    ],
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "logs.ap-northeast-1.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "CMKAliasFD5A95C9": {
+      "Properties": {
+        "AliasName": "alias/DevBLEAEcsApp",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "CMK56817A4C",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+    },
+    "CustomCrossRegionExportWriterCustomResourceProviderHandlerD8786E8A": {
+      "DependsOn": [
+        "CustomCrossRegionExportWriterCustomResourceProviderRoleC951B1E1",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-ap-northeast-1",
+          },
+          "S3Key": "HASH-REPLACED.zip",
+        },
+        "Handler": "__entrypoint__.handler",
+        "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCrossRegionExportWriterCustomResourceProviderRoleC951B1E1",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs20.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCrossRegionExportWriterCustomResourceProviderRoleC951B1E1": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "ssm:DeleteParameters",
+                    "ssm:ListTagsForResource",
+                    "ssm:GetParameters",
+                    "ssm:PutParameter",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:",
+                          {
+                            "Ref": "AWS::Partition",
+                          },
+                          ":ssm:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":parameter/cdk/exports/*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "Inline",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "DatastoreAuroraCPUUtilAlarm68E3EE59": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "DatapointsToAlarm": 3,
+        "Dimensions": [
+          {
+            "Name": "DBClusterIdentifier",
+            "Value": {
+              "Ref": "DatastoreAuroraCluster2FE23DD5",
+            },
+          },
+        ],
+        "EvaluationPeriods": 3,
+        "MetricName": "CPUUtilization",
+        "Namespace": "AWS/RDS",
+        "Period": 60,
+        "Statistic": "Average",
+        "Threshold": 90,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "DatastoreAuroraCluster2FE23DD5": {
+      "DeletionPolicy": "Snapshot",
+      "Properties": {
+        "CopyTagsToSnapshot": true,
+        "DBClusterParameterGroupName": "default.aurora-postgresql11",
+        "DBSubnetGroupName": {
+          "Ref": "DatastoreAuroraClusterSubnetsD8325308",
+        },
+        "DatabaseName": "mydb",
+        "EnableCloudwatchLogsExports": [
+          "postgresql",
+        ],
+        "Engine": "aurora-postgresql",
+        "EngineVersion": "11.9",
+        "KmsKeyId": {
+          "Fn::GetAtt": [
+            "CMK56817A4C",
+            "Arn",
+          ],
+        },
+        "MasterUserPassword": {
+          "Fn::Join": [
+            "",
+            [
+              "{{resolve:secretsmanager:",
+              {
+                "Ref": "DevBLEAEcsAppDatastoreAuroraClusterSecret062A0F6B3fdaad7efa858a3daf9490cf0a702aeb",
+              },
+              ":SecretString:password::}}",
+            ],
+          ],
+        },
+        "MasterUsername": "dbadmin",
+        "Port": 5432,
+        "StorageEncrypted": true,
+        "VpcSecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "DatastoreAuroraClusterSecurityGroup1E718F0C",
+              "GroupId",
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::RDS::DBCluster",
+      "UpdateReplacePolicy": "Snapshot",
+    },
+    "DatastoreAuroraClusterInstance17CC9C737": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "NetworkingVpcProtectedSubnet1RouteTableAssociation011790AB",
+        "NetworkingVpcProtectedSubnet2RouteTableAssociation01AFDB7E",
+      ],
+      "Properties": {
+        "DBClusterIdentifier": {
+          "Ref": "DatastoreAuroraCluster2FE23DD5",
+        },
+        "DBInstanceClass": "db.t3.medium",
+        "DBInstanceIdentifier": "Datastore1",
+        "DBSubnetGroupName": {
+          "Ref": "DatastoreAuroraClusterSubnetsD8325308",
+        },
+        "EnablePerformanceInsights": true,
+        "Engine": "aurora-postgresql",
+        "PerformanceInsightsKMSKeyId": {
+          "Fn::GetAtt": [
+            "CMK56817A4C",
+            "Arn",
+          ],
+        },
+        "PerformanceInsightsRetentionPeriod": 7,
+        "PubliclyAccessible": false,
+      },
+      "Type": "AWS::RDS::DBInstance",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "DatastoreAuroraClusterInstance2FA5EF5D9": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "NetworkingVpcProtectedSubnet1RouteTableAssociation011790AB",
+        "NetworkingVpcProtectedSubnet2RouteTableAssociation01AFDB7E",
+      ],
+      "Properties": {
+        "DBClusterIdentifier": {
+          "Ref": "DatastoreAuroraCluster2FE23DD5",
+        },
+        "DBInstanceClass": "db.t3.medium",
+        "DBInstanceIdentifier": "Datastore2",
+        "DBSubnetGroupName": {
+          "Ref": "DatastoreAuroraClusterSubnetsD8325308",
+        },
+        "EnablePerformanceInsights": true,
+        "Engine": "aurora-postgresql",
+        "PerformanceInsightsKMSKeyId": {
+          "Fn::GetAtt": [
+            "CMK56817A4C",
+            "Arn",
+          ],
+        },
+        "PerformanceInsightsRetentionPeriod": 7,
+        "PubliclyAccessible": false,
+      },
+      "Type": "AWS::RDS::DBInstance",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "DatastoreAuroraClusterLogRetentionpostgresql428EA768": {
+      "Properties": {
+        "LogGroupName": {
+          "Fn::Join": [
+            "",
+            [
+              "/aws/rds/cluster/",
+              {
+                "Ref": "DatastoreAuroraCluster2FE23DD5",
+              },
+              "/postgresql",
+            ],
+          ],
+        },
+        "RetentionInDays": 90,
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::LogRetention",
+    },
+    "DatastoreAuroraClusterSecretAttachment3F350821": {
+      "Properties": {
+        "SecretId": {
+          "Ref": "DevBLEAEcsAppDatastoreAuroraClusterSecret062A0F6B3fdaad7efa858a3daf9490cf0a702aeb",
+        },
+        "TargetId": {
+          "Ref": "DatastoreAuroraCluster2FE23DD5",
+        },
+        "TargetType": "AWS::RDS::DBCluster",
+      },
+      "Type": "AWS::SecretsManager::SecretTargetAttachment",
+    },
+    "DatastoreAuroraClusterSecurityGroup1E718F0C": {
+      "Properties": {
+        "GroupDescription": "RDS security group",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "DatastoreAuroraClusterSecurityGroupfromDevBLEAEcsAppAppSg3B8EA4D3IndirectPort62569279": {
+      "Properties": {
+        "Description": "from DevBLEAEcsAppAppSg3B8EA4D3:{IndirectPort}",
+        "FromPort": {
+          "Fn::GetAtt": [
+            "DatastoreAuroraCluster2FE23DD5",
+            "Endpoint.Port",
+          ],
+        },
+        "GroupId": {
+          "Fn::GetAtt": [
+            "DatastoreAuroraClusterSecurityGroup1E718F0C",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "EcsAppAppSg51F5A2AA",
+            "GroupId",
+          ],
+        },
+        "ToPort": {
+          "Fn::GetAtt": [
+            "DatastoreAuroraCluster2FE23DD5",
+            "Endpoint.Port",
+          ],
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "DatastoreAuroraClusterSubnetsD8325308": {
+      "Properties": {
+        "DBSubnetGroupDescription": "Subnets for AuroraCluster database",
+        "SubnetIds": [
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+          },
+        ],
+      },
+      "Type": "AWS::RDS::DBSubnetGroup",
+    },
+    "DatastoreRdsClusterEventSubscB4CD338B": {
+      "Properties": {
+        "Enabled": true,
+        "EventCategories": [
+          "failure",
+          "failover",
+          "maintenance",
+        ],
+        "SnsTopicArn": {
+          "Ref": "MonitoringAlarmTopicAF62D4F1",
+        },
+        "SourceType": "db-cluster",
+      },
+      "Type": "AWS::RDS::EventSubscription",
+    },
+    "DatastoreRdsInstanceEventSubsc8966D6FB": {
+      "Properties": {
+        "Enabled": true,
+        "EventCategories": [
+          "availability",
+          "configuration change",
+          "deletion",
+          "failover",
+          "failure",
+          "maintenance",
+          "notification",
+          "recovery",
+        ],
+        "SnsTopicArn": {
+          "Ref": "MonitoringAlarmTopicAF62D4F1",
+        },
+        "SourceType": "db-instance",
+      },
+      "Type": "AWS::RDS::EventSubscription",
+    },
+    "DevBLEAEcsAppDatastoreAuroraClusterSecret062A0F6B3fdaad7efa858a3daf9490cf0a702aeb": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Generated by the CDK for stack: ",
+              {
+                "Ref": "AWS::StackName",
+              },
+            ],
+          ],
+        },
+        "GenerateSecretString": {
+          "ExcludeCharacters": " %+~\`#$&*()|[]{}:;<>?!'/@"\\",
+          "GenerateStringKey": "password",
+          "PasswordLength": 30,
+          "SecretStringTemplate": "{"username":"dbadmin"}",
+        },
+      },
+      "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "EcsAppAlb74CC21B3": {
+      "DependsOn": [
+        "NetworkingVpcPublicSubnet1DefaultRoute80C01FA6",
+        "NetworkingVpcPublicSubnet1RouteTableAssociationD13830EA",
+        "NetworkingVpcPublicSubnet2DefaultRouteDF98F60F",
+        "NetworkingVpcPublicSubnet2RouteTableAssociation2D4CEA06",
+      ],
+      "Properties": {
+        "LoadBalancerAttributes": [
+          {
+            "Key": "deletion_protection.enabled",
+            "Value": "false",
+          },
+          {
+            "Key": "access_logs.s3.enabled",
+            "Value": "true",
+          },
+          {
+            "Key": "access_logs.s3.bucket",
+            "Value": {
+              "Ref": "EcsAppAlbLogBucket160A578E",
+            },
+          },
+        ],
+        "Scheme": "internet-facing",
+        "SecurityGroups": [
+          {
+            "Fn::GetAtt": [
+              "EcsAppAlbSg7EC37FC7",
+              "GroupId",
+            ],
+          },
+        ],
+        "Subnets": [
+          {
+            "Ref": "NetworkingVpcPublicSubnet1Subnet918289EE",
+          },
+          {
+            "Ref": "NetworkingVpcPublicSubnet2Subnet9D9E5AFB",
+          },
+        ],
+        "Type": "application",
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+    },
+    "EcsAppAlbAlbSslListener056EB6C5": {
+      "Properties": {
+        "DefaultActions": [
+          {
+            "TargetGroupArn": {
+              "Ref": "EcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0",
+            },
+            "Type": "forward",
+          },
+        ],
+        "LoadBalancerArn": {
+          "Ref": "EcsAppAlb74CC21B3",
+        },
+        "Port": 80,
+        "Protocol": "HTTP",
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    },
+    "EcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0": {
+      "Properties": {
+        "Port": 80,
+        "Protocol": "HTTP",
+        "TargetGroupAttributes": [
+          {
+            "Key": "deregistration_delay.timeout_seconds",
+            "Value": "30",
+          },
+          {
+            "Key": "stickiness.enabled",
+            "Value": "false",
+          },
+        ],
+        "TargetType": "ip",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+    },
+    "EcsAppAlbHttp4xxE478B099": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [
+          {
+            "Name": "LoadBalancer",
+            "Value": {
+              "Fn::GetAtt": [
+                "EcsAppAlb74CC21B3",
+                "LoadBalancerFullName",
+              ],
+            },
+          },
+        ],
+        "EvaluationPeriods": 3,
+        "MetricName": "HTTPCode_ELB_4XX_Count",
+        "Namespace": "AWS/ApplicationELB",
+        "Period": 60,
+        "Statistic": "Sum",
+        "Threshold": 10,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "EcsAppAlbHttp5xx9D54C209": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [
+          {
+            "Name": "LoadBalancer",
+            "Value": {
+              "Fn::GetAtt": [
+                "EcsAppAlb74CC21B3",
+                "LoadBalancerFullName",
+              ],
+            },
+          },
+        ],
+        "EvaluationPeriods": 3,
+        "MetricName": "HTTPCode_ELB_5XX_Count",
+        "Namespace": "AWS/ApplicationELB",
+        "Period": 60,
+        "Statistic": "Sum",
+        "Threshold": 10,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "EcsAppAlbLogBucket160A578E": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccessControl": "Private",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "EcsAppAlbLogBucketPolicy1A37CC7F": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "EcsAppAlbLogBucket160A578E",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "EcsAppAlbLogBucket160A578E",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "EcsAppAlbLogBucket160A578E",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "s3:PutObject",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::582318560864:root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "EcsAppAlbLogBucket160A578E",
+                        "Arn",
+                      ],
+                    },
+                    "/AWSLogs/",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "s3:PutObject",
+              "Condition": {
+                "StringEquals": {
+                  "s3:x-amz-acl": "bucket-owner-full-control",
+                },
+              },
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "delivery.logs.amazonaws.com",
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "EcsAppAlbLogBucket160A578E",
+                        "Arn",
+                      ],
+                    },
+                    "/AWSLogs/",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "s3:GetBucketAcl",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "delivery.logs.amazonaws.com",
+              },
+              "Resource": {
+                "Fn::GetAtt": [
+                  "EcsAppAlbLogBucket160A578E",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "EcsAppAlbResponseTime6784ABB9": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [
+          {
+            "Name": "LoadBalancer",
+            "Value": {
+              "Fn::GetAtt": [
+                "EcsAppAlb74CC21B3",
+                "LoadBalancerFullName",
+              ],
+            },
+          },
+        ],
+        "EvaluationPeriods": 3,
+        "MetricName": "TargetResponseTime",
+        "Namespace": "AWS/ApplicationELB",
+        "Period": 60,
+        "Statistic": "Average",
+        "Threshold": 100,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "EcsAppAlbSg7EC37FC7": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/EcsApp/AlbSg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow from anyone on port 80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "EcsAppAlbTgHealthyHostCountBB6659CA": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+        "ComparisonOperator": "LessThanThreshold",
+        "Dimensions": [
+          {
+            "Name": "LoadBalancer",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::Select": [
+                      1,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "/",
+                  {
+                    "Fn::Select": [
+                      2,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "/",
+                  {
+                    "Fn::Select": [
+                      3,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              ],
+            },
+          },
+          {
+            "Name": "TargetGroup",
+            "Value": {
+              "Fn::GetAtt": [
+                "EcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0",
+                "TargetGroupFullName",
+              ],
+            },
+          },
+        ],
+        "EvaluationPeriods": 3,
+        "MetricName": "HealthyHostCount",
+        "Namespace": "AWS/ApplicationELB",
+        "Period": 60,
+        "Statistic": "Average",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "EcsAppAlbTgUnHealthyHostCount0E9D8FD9": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": [
+          {
+            "Name": "LoadBalancer",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::Select": [
+                      1,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "/",
+                  {
+                    "Fn::Select": [
+                      2,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "/",
+                  {
+                    "Fn::Select": [
+                      3,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              ],
+            },
+          },
+          {
+            "Name": "TargetGroup",
+            "Value": {
+              "Fn::GetAtt": [
+                "EcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0",
+                "TargetGroupFullName",
+              ],
+            },
+          },
+        ],
+        "EvaluationPeriods": 3,
+        "MetricName": "UnHealthyHostCount",
+        "Namespace": "AWS/ApplicationELB",
+        "Period": 60,
+        "Statistic": "Average",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "EcsAppAppLogGroupF1EFF025": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "KmsKeyId": {
+          "Fn::GetAtt": [
+            "CMK56817A4C",
+            "Arn",
+          ],
+        },
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "EcsAppAppSg51F5A2AA": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/EcsApp/AppSg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "EcsAppAppSgfromDevBLEAEcsAppAlbSg3F55726F80BEF887B7": {
+      "Properties": {
+        "Description": "Load balancer to target",
+        "FromPort": 80,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "EcsAppAppSg51F5A2AA",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "EcsAppAlbSg7EC37FC7",
+            "GroupId",
+          ],
+        },
+        "ToPort": 80,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "EcsAppCluster7C7DF57B": {
+      "Properties": {
+        "ClusterSettings": [
+          {
+            "Name": "containerInsights",
+            "Value": "enabled",
+          },
+        ],
+      },
+      "Type": "AWS::ECS::Cluster",
+    },
+    "EcsAppClusterCDCF413B": {
+      "Properties": {
+        "CapacityProviders": [
+          "FARGATE",
+          "FARGATE_SPOT",
+        ],
+        "Cluster": {
+          "Ref": "EcsAppCluster7C7DF57B",
+        },
+        "DefaultCapacityProviderStrategy": [],
+      },
+      "Type": "AWS::ECS::ClusterCapacityProviderAssociations",
+    },
+    "EcsAppECSServiceActionEventRule3F3C7B23": {
+      "Properties": {
+        "Description": "CloudWatch Event Rule to send notification on ECS Service action events.",
+        "EventPattern": {
+          "detail": {
+            "eventType": [
+              "WARN",
+              "ERROR",
+            ],
+          },
+          "detail-type": [
+            "ECS Service Action",
+          ],
+          "source": [
+            "aws.ecs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "MonitoringAlarmTopicAF62D4F1",
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "EcsAppECSServiceDeploymentEventRuleBD680642": {
+      "Properties": {
+        "Description": "CloudWatch Event Rule to send notification on ECS Service deployment events.",
+        "EventPattern": {
+          "detail": {
+            "eventType": [
+              "WARN",
+              "ERROR",
+            ],
+          },
+          "detail-type": [
+            "ECS Deployment State Change",
+          ],
+          "source": [
+            "aws.ecs",
+          ],
+        },
+        "State": "ENABLED",
+        "Targets": [
+          {
+            "Arn": {
+              "Ref": "MonitoringAlarmTopicAF62D4F1",
+            },
+            "Id": "Target0",
+          },
+        ],
+      },
+      "Type": "AWS::Events::Rule",
+    },
+    "EcsAppEcsTaskExecutionRoleD9A4AEEE": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+              ],
+            ],
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "ecr:BatchImportUpstreamImage",
+                    "ecr:CreateRepository",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "ecrPullThroughCache",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "EcsAppEcsTaskExecutionRoleDefaultPolicy32A365EF": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":ecr:ap-northeast-1:",
+                    {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":repository/devblecsapp-af22469e/docker/library/httpd",
+                  ],
+                ],
+              },
+            },
+            {
+              "Action": "ecr:GetAuthorizationToken",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "EcsAppAppLogGroupF1EFF025",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "EcsAppEcsTaskExecutionRoleDefaultPolicy32A365EF",
+        "Roles": [
+          {
+            "Ref": "EcsAppEcsTaskExecutionRoleD9A4AEEE",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "EcsAppEcsTaskRole2B17F49D": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "EcsAppFargateCpuUtilDC42B865": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "DatapointsToAlarm": 3,
+        "Dimensions": [
+          {
+            "Name": "ClusterName",
+            "Value": {
+              "Ref": "EcsAppCluster7C7DF57B",
+            },
+          },
+          {
+            "Name": "ServiceName",
+            "Value": {
+              "Fn::GetAtt": [
+                "EcsAppServiceABC8901F",
+                "Name",
+              ],
+            },
+          },
+        ],
+        "EvaluationPeriods": 3,
+        "MetricName": "CPUUtilization",
+        "Namespace": "AWS/ECS",
+        "Period": 60,
+        "Statistic": "Average",
+        "Threshold": 80,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "EcsAppPullThroughCacheRuleB070981A": {
+      "Properties": {
+        "EcrRepositoryPrefix": "devblecsapp-af22469e",
+        "UpstreamRegistryUrl": "public.ecr.aws",
+      },
+      "Type": "AWS::ECR::PullThroughCacheRule",
+    },
+    "EcsAppRepository019D9E05": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "ImageScanningConfiguration": {
+          "ScanOnPush": true,
+        },
+        "RepositoryName": "devblecsapp-af22469e/docker/library/httpd",
+      },
+      "Type": "AWS::ECR::Repository",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "EcsAppServiceABC8901F": {
+      "DependsOn": [
+        "EcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0",
+        "EcsAppAlbAlbSslListener056EB6C5",
+        "EcsAppEcsTaskRole2B17F49D",
+      ],
+      "Properties": {
+        "CapacityProviderStrategy": [
+          {
+            "CapacityProvider": "FARGATE",
+            "Weight": 1,
+          },
+        ],
+        "Cluster": {
+          "Ref": "EcsAppCluster7C7DF57B",
+        },
+        "DeploymentConfiguration": {
+          "Alarms": {
+            "AlarmNames": [],
+            "Enable": false,
+            "Rollback": false,
+          },
+          "MaximumPercent": 200,
+          "MinimumHealthyPercent": 50,
+        },
+        "DesiredCount": 2,
+        "EnableECSManagedTags": false,
+        "HealthCheckGracePeriodSeconds": 60,
+        "LoadBalancers": [
+          {
+            "ContainerName": "App",
+            "ContainerPort": 80,
+            "TargetGroupArn": {
+              "Ref": "EcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0",
+            },
+          },
+        ],
+        "NetworkConfiguration": {
+          "AwsvpcConfiguration": {
+            "AssignPublicIp": "DISABLED",
+            "SecurityGroups": [
+              {
+                "Fn::GetAtt": [
+                  "EcsAppAppSg51F5A2AA",
+                  "GroupId",
+                ],
+              },
+            ],
+            "Subnets": [
+              {
+                "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+              },
+              {
+                "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+              },
+            ],
+          },
+        },
+        "PlatformVersion": "LATEST",
+        "TaskDefinition": {
+          "Ref": "EcsAppTaskDefinitionB559BC4B",
+        },
+      },
+      "Type": "AWS::ECS::Service",
+    },
+    "EcsAppServiceTaskCountTarget68D0F209": {
+      "DependsOn": [
+        "EcsAppEcsTaskRole2B17F49D",
+      ],
+      "Properties": {
+        "MaxCapacity": 10,
+        "MinCapacity": 2,
+        "ResourceId": {
+          "Fn::Join": [
+            "",
+            [
+              "service/",
+              {
+                "Ref": "EcsAppCluster7C7DF57B",
+              },
+              "/",
+              {
+                "Fn::GetAtt": [
+                  "EcsAppServiceABC8901F",
+                  "Name",
+                ],
+              },
+            ],
+          ],
+        },
+        "RoleARN": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition",
+              },
+              ":iam::",
+              {
+                "Ref": "AWS::AccountId",
+              },
+              ":role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService",
+            ],
+          ],
+        },
+        "ScalableDimension": "ecs:service:DesiredCount",
+        "ServiceNamespace": "ecs",
+      },
+      "Type": "AWS::ApplicationAutoScaling::ScalableTarget",
+    },
+    "EcsAppServiceTaskCountTargetCpuScalingEC96128C": {
+      "DependsOn": [
+        "EcsAppEcsTaskRole2B17F49D",
+      ],
+      "Properties": {
+        "PolicyName": "DevBLEAEcsAppServiceTaskCountTargetCpuScaling2EA8D08F",
+        "PolicyType": "TargetTrackingScaling",
+        "ScalingTargetId": {
+          "Ref": "EcsAppServiceTaskCountTarget68D0F209",
+        },
+        "TargetTrackingScalingPolicyConfiguration": {
+          "PredefinedMetricSpecification": {
+            "PredefinedMetricType": "ECSServiceAverageCPUUtilization",
+          },
+          "TargetValue": 50,
+        },
+      },
+      "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+    },
+    "EcsAppServiceTaskCountTargetRequestScaling9DD1E39A": {
+      "DependsOn": [
+        "EcsAppEcsTaskRole2B17F49D",
+      ],
+      "Properties": {
+        "PolicyName": "DevBLEAEcsAppServiceTaskCountTargetRequestScaling50CC5FBF",
+        "PolicyType": "TargetTrackingScaling",
+        "ScalingTargetId": {
+          "Ref": "EcsAppServiceTaskCountTarget68D0F209",
+        },
+        "TargetTrackingScalingPolicyConfiguration": {
+          "PredefinedMetricSpecification": {
+            "PredefinedMetricType": "ALBRequestCountPerTarget",
+            "ResourceLabel": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Fn::Select": [
+                      1,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "/",
+                  {
+                    "Fn::Select": [
+                      2,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "/",
+                  {
+                    "Fn::Select": [
+                      3,
+                      {
+                        "Fn::Split": [
+                          "/",
+                          {
+                            "Ref": "EcsAppAlbAlbSslListener056EB6C5",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  "/",
+                  {
+                    "Fn::GetAtt": [
+                      "EcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0",
+                      "TargetGroupFullName",
+                    ],
+                  },
+                ],
+              ],
+            },
+          },
+          "TargetValue": 10000,
+        },
+      },
+      "Type": "AWS::ApplicationAutoScaling::ScalingPolicy",
+    },
+    "EcsAppTaskDefinitionB559BC4B": {
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Environment": [
+              {
+                "Name": "ENVIRONMENT_VARIABLE_SAMPLE_KEY",
+                "Value": "Environment Variable Sample Value",
+              },
+            ],
+            "Essential": true,
+            "Image": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "AWS::AccountId",
+                  },
+                  ".dkr.ecr.ap-northeast-1.",
+                  {
+                    "Ref": "AWS::URLSuffix",
+                  },
+                  "/devblecsapp-af22469e/docker/library/httpd:latest",
+                ],
+              ],
+            },
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": {
+                  "Ref": "EcsAppAppLogGroupF1EFF025",
+                },
+                "awslogs-region": "ap-northeast-1",
+                "awslogs-stream-prefix": "BLEA-ECSApp-",
+              },
+            },
+            "Name": "App",
+            "PortMappings": [
+              {
+                "ContainerPort": 80,
+                "Protocol": "tcp",
+              },
+            ],
+          },
+        ],
+        "Cpu": "256",
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "EcsAppEcsTaskExecutionRoleD9A4AEEE",
+            "Arn",
+          ],
+        },
+        "Family": "DevBLEAEcsAppTaskDefinition687CDF6B",
+        "Memory": "512",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": [
+          "FARGATE",
+        ],
+        "TaskRoleArn": {
+          "Fn::GetAtt": [
+            "EcsAppEcsTaskRole2B17F49D",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ECS::TaskDefinition",
+    },
+    "ExportsWriteruseast10F67B507DDE2E818": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCrossRegionExportWriterCustomResourceProviderHandlerD8786E8A",
+            "Arn",
+          ],
+        },
+        "WriterProps": {
+          "exports": {
+            "/cdk/exports/Dev-BLEAEcsAppFrontend/DevBLEAEcsAppapnortheast1FnGetAttEcsAppAlb74CC21B3DNSNameDDC2F343": {
+              "Fn::GetAtt": [
+                "EcsAppAlb74CC21B3",
+                "DNSName",
+              ],
+            },
+          },
+          "region": "us-east-1",
+        },
+      },
+      "Type": "Custom::CrossRegionExportWriter",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+      "DependsOn": [
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-ap-northeast-1",
+          },
+          "S3Key": "HASH-REPLACED.zip",
+        },
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs20.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:PutRetentionPolicy",
+                "logs:DeleteRetentionPolicy",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "Roles": [
+          {
+            "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "MonitoringAlarmTopicAF62D4F1": {
+      "Type": "AWS::SNS::Topic",
+    },
+    "MonitoringAlarmTopicPolicyCB9CCFB0": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudwatch.amazonaws.com",
+              },
+              "Resource": {
+                "Ref": "MonitoringAlarmTopicAF62D4F1",
+              },
+              "Sid": "0",
+            },
+            {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "events.amazonaws.com",
+              },
+              "Resource": {
+                "Ref": "MonitoringAlarmTopicAF62D4F1",
+              },
+              "Sid": "1",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Topics": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::TopicPolicy",
+    },
+    "MonitoringChatbotChannel3696F0E4": {
+      "Properties": {
+        "ConfigurationName": "DevBLEAEcsAppMonitoringEA1D1433",
+        "IamRoleArn": {
+          "Fn::GetAtt": [
+            "MonitoringChatbotRoleD766A77D",
+            "Arn",
+          ],
+        },
+        "SlackChannelId": "CYYYYYYYYYY",
+        "SlackWorkspaceId": "TXXXXXXXXXX",
+        "SnsTopicArns": [
+          {
+            "Ref": "MonitoringAlarmTopicAF62D4F1",
+          },
+        ],
+      },
+      "Type": "AWS::Chatbot::SlackChannelConfiguration",
+    },
+    "MonitoringChatbotRoleD766A77D": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "chatbot.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/ReadOnlyAccess",
+              ],
+            ],
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/CloudWatchReadOnlyAccess",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "MonitoringEmailSubsc6D15C956": {
+      "Properties": {
+        "Endpoint": "notify-security@example.com",
+        "Protocol": "email",
+        "TopicArn": {
+          "Ref": "MonitoringAlarmTopicAF62D4F1",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+    "NetworkingFlowLogBucket33187957": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccessControl": "Private",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "KMSMasterKeyID": {
+                  "Fn::GetAtt": [
+                    "NetworkingKey5DCEF7CD",
+                    "Arn",
+                  ],
+                },
+                "SSEAlgorithm": "aws:kms",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "NetworkingFlowLogBucketPolicy1EE356A6": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "NetworkingFlowLogBucket33187957",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "NetworkingFlowLogBucket33187957",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "NetworkingFlowLogBucket33187957",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "NetworkingKey5DCEF7CD": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "Description": "BLEA Guest Sample: CMK for EcsApp VPC Flow Logs",
+        "EnableKeyRotation": true,
+        "KeyPolicy": {
+          "Statement": [
+            {
+              "Action": "kms:*",
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":iam::",
+                      {
+                        "Ref": "AWS::AccountId",
+                      },
+                      ":root",
+                    ],
+                  ],
+                },
+              },
+              "Resource": "*",
+            },
+            {
+              "Action": [
+                "kms:Encrypt*",
+                "kms:Decrypt*",
+                "kms:ReEncrypt*",
+                "kms:GenerateDataKey*",
+                "kms:Describe*",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "delivery.logs.amazonaws.com",
+              },
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::KMS::Key",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "NetworkingKeyAlias2BF09FC0": {
+      "Properties": {
+        "AliasName": "alias/DevBLEAEcsAppNetworkingA22B7407",
+        "TargetKeyId": {
+          "Fn::GetAtt": [
+            "NetworkingKey5DCEF7CD",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::KMS::Alias",
+    },
+    "NetworkingPrivateNacl8E602059": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/PrivateNacl",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::NetworkAcl",
+    },
+    "NetworkingPrivateNaclDefaultAssociationDevBLEAEcsAppNetworkingVpcPrivateSubnet1A826B024A559447B": {
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "NetworkingPrivateNacl8E602059",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPrivateSubnet1Subnet717BCE48",
+        },
+      },
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+    },
+    "NetworkingPrivateNaclDefaultAssociationDevBLEAEcsAppNetworkingVpcPrivateSubnet2538D8B4F0D542AC8": {
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "NetworkingPrivateNacl8E602059",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPrivateSubnet2Subnet4313381B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+    },
+    "NetworkingPrivateNaclPrivateEgress8D7BEE42": {
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": true,
+        "NetworkAclId": {
+          "Ref": "NetworkingPrivateNacl8E602059",
+        },
+        "Protocol": -1,
+        "RuleAction": "allow",
+        "RuleNumber": 100,
+      },
+      "Type": "AWS::EC2::NetworkAclEntry",
+    },
+    "NetworkingPrivateNaclPrivateIngressA5CFFFD6": {
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": false,
+        "NetworkAclId": {
+          "Ref": "NetworkingPrivateNacl8E602059",
+        },
+        "Protocol": -1,
+        "RuleAction": "allow",
+        "RuleNumber": 120,
+      },
+      "Type": "AWS::EC2::NetworkAclEntry",
+    },
+    "NetworkingPublicNacl8F0D44A5": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/PublicNacl",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::NetworkAcl",
+    },
+    "NetworkingPublicNaclDefaultAssociationDevBLEAEcsAppNetworkingVpcPublicSubnet16B6DFC6159138662": {
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "NetworkingPublicNacl8F0D44A5",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPublicSubnet1Subnet918289EE",
+        },
+      },
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+    },
+    "NetworkingPublicNaclDefaultAssociationDevBLEAEcsAppNetworkingVpcPublicSubnet289C2029036EE5714": {
+      "Properties": {
+        "NetworkAclId": {
+          "Ref": "NetworkingPublicNacl8F0D44A5",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPublicSubnet2Subnet9D9E5AFB",
+        },
+      },
+      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
+    },
+    "NetworkingPublicNaclPublicEgress927B5E86": {
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": true,
+        "NetworkAclId": {
+          "Ref": "NetworkingPublicNacl8F0D44A5",
+        },
+        "Protocol": -1,
+        "RuleAction": "allow",
+        "RuleNumber": 100,
+      },
+      "Type": "AWS::EC2::NetworkAclEntry",
+    },
+    "NetworkingPublicNaclPublicIngressAC30352B": {
+      "Properties": {
+        "CidrBlock": "0.0.0.0/0",
+        "Egress": false,
+        "NetworkAclId": {
+          "Ref": "NetworkingPublicNacl8F0D44A5",
+        },
+        "Protocol": -1,
+        "RuleAction": "allow",
+        "RuleNumber": 100,
+      },
+      "Type": "AWS::EC2::NetworkAclEntry",
+    },
+    "NetworkingVpc6B5E6F44": {
+      "Properties": {
+        "CidrBlock": "10.100.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::VPC",
+    },
+    "NetworkingVpcEc2EndpointCDE9BE0C": {
+      "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NetworkingVpcEc2EndpointSecurityGroup28494A31",
+              "GroupId",
+            ],
+          },
+        ],
+        "ServiceName": "com.amazonaws.ap-northeast-1.ec2",
+        "SubnetIds": [
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+          },
+        ],
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkingVpcEc2EndpointSecurityGroup28494A31": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/Networking/Vpc/Ec2Endpoint/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "NetworkingVpc6B5E6F44",
+                "CidrBlock",
+              ],
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "NetworkingVpc6B5E6F44",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "NetworkingVpcEc2MessagesEndpointD64BDA68": {
+      "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NetworkingVpcEc2MessagesEndpointSecurityGroupA9FD1F29",
+              "GroupId",
+            ],
+          },
+        ],
+        "ServiceName": "com.amazonaws.ap-northeast-1.ec2messages",
+        "SubnetIds": [
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+          },
+        ],
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkingVpcEc2MessagesEndpointSecurityGroupA9FD1F29": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/Networking/Vpc/Ec2MessagesEndpoint/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "NetworkingVpc6B5E6F44",
+                "CidrBlock",
+              ],
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "NetworkingVpc6B5E6F44",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "NetworkingVpcEcrDkrEndpoint1A7B0929": {
+      "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NetworkingVpcEcrDkrEndpointSecurityGroupBDD2F421",
+              "GroupId",
+            ],
+          },
+        ],
+        "ServiceName": "com.amazonaws.ap-northeast-1.ecr.dkr",
+        "SubnetIds": [
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+          },
+        ],
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkingVpcEcrDkrEndpointSecurityGroupBDD2F421": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/Networking/Vpc/EcrDkrEndpoint/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "NetworkingVpc6B5E6F44",
+                "CidrBlock",
+              ],
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "NetworkingVpc6B5E6F44",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "NetworkingVpcEcrEndpoint1EB7FE50": {
+      "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NetworkingVpcEcrEndpointSecurityGroup50E4A6FF",
+              "GroupId",
+            ],
+          },
+        ],
+        "ServiceName": "com.amazonaws.ap-northeast-1.ecr.api",
+        "SubnetIds": [
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+          },
+        ],
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkingVpcEcrEndpointSecurityGroup50E4A6FF": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/Networking/Vpc/EcrEndpoint/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "NetworkingVpc6B5E6F44",
+                "CidrBlock",
+              ],
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "NetworkingVpc6B5E6F44",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "NetworkingVpcFlowLogsFlowLog7DF32A67": {
+      "DependsOn": [
+        "NetworkingFlowLogBucketPolicy1EE356A6",
+      ],
+      "Properties": {
+        "LogDestination": {
+          "Fn::GetAtt": [
+            "NetworkingFlowLogBucket33187957",
+            "Arn",
+          ],
+        },
+        "LogDestinationType": "s3",
+        "ResourceId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+        "ResourceType": "VPC",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/FlowLogs",
+          },
+        ],
+        "TrafficType": "ALL",
+      },
+      "Type": "AWS::EC2::FlowLog",
+    },
+    "NetworkingVpcIGW21218DAB": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::InternetGateway",
+    },
+    "NetworkingVpcLogsEndpoint64784F03": {
+      "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NetworkingVpcLogsEndpointSecurityGroup75F247A6",
+              "GroupId",
+            ],
+          },
+        ],
+        "ServiceName": "com.amazonaws.ap-northeast-1.logs",
+        "SubnetIds": [
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+          },
+        ],
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkingVpcLogsEndpointSecurityGroup75F247A6": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/Networking/Vpc/LogsEndpoint/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "NetworkingVpc6B5E6F44",
+                "CidrBlock",
+              ],
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "NetworkingVpc6B5E6F44",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "NetworkingVpcPrivateSubnet1DefaultRouteDE58E6A0": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "NetworkingVpcPublicSubnet1NATGateway70EEEC07",
+        },
+        "RouteTableId": {
+          "Ref": "NetworkingVpcPrivateSubnet1RouteTable69CC9A73",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "NetworkingVpcPrivateSubnet1RouteTable69CC9A73": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PrivateSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkingVpcPrivateSubnet1RouteTableAssociation761725EA": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "NetworkingVpcPrivateSubnet1RouteTable69CC9A73",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPrivateSubnet1Subnet717BCE48",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkingVpcPrivateSubnet1Subnet717BCE48": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.100.4.0/22",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PrivateSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkingVpcPrivateSubnet2DefaultRoute5BF16047": {
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "NetworkingVpcPublicSubnet1NATGateway70EEEC07",
+        },
+        "RouteTableId": {
+          "Ref": "NetworkingVpcPrivateSubnet2RouteTableAE92CE40",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "NetworkingVpcPrivateSubnet2RouteTableAE92CE40": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PrivateSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkingVpcPrivateSubnet2RouteTableAssociation9EFBB61D": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "NetworkingVpcPrivateSubnet2RouteTableAE92CE40",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPrivateSubnet2Subnet4313381B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkingVpcPrivateSubnet2Subnet4313381B": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.100.8.0/22",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private",
+          },
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PrivateSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkingVpcProtectedSubnet1RouteTable2C1558E9": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/ProtectedSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkingVpcProtectedSubnet1RouteTableAssociation011790AB": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "NetworkingVpcProtectedSubnet1RouteTable2C1558E9",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkingVpcProtectedSubnet1SubnetF97DE33B": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.100.12.0/22",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Protected",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated",
+          },
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/ProtectedSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkingVpcProtectedSubnet2RouteTableA434E57C": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/ProtectedSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkingVpcProtectedSubnet2RouteTableAssociation01AFDB7E": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "NetworkingVpcProtectedSubnet2RouteTableA434E57C",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkingVpcProtectedSubnet2SubnetE110C692": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.100.16.0/22",
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Protected",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Isolated",
+          },
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/ProtectedSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkingVpcPublicSubnet1DefaultRoute80C01FA6": {
+      "DependsOn": [
+        "NetworkingVpcVPCGW12E561D8",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "NetworkingVpcIGW21218DAB",
+        },
+        "RouteTableId": {
+          "Ref": "NetworkingVpcPublicSubnet1RouteTable8FB3C18A",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "NetworkingVpcPublicSubnet1EIP7D5353EC": {
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PublicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::EIP",
+    },
+    "NetworkingVpcPublicSubnet1NATGateway70EEEC07": {
+      "DependsOn": [
+        "NetworkingVpcPublicSubnet1DefaultRoute80C01FA6",
+        "NetworkingVpcPublicSubnet1RouteTableAssociationD13830EA",
+      ],
+      "Properties": {
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "NetworkingVpcPublicSubnet1EIP7D5353EC",
+            "AllocationId",
+          ],
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPublicSubnet1Subnet918289EE",
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PublicSubnet1",
+          },
+        ],
+      },
+      "Type": "AWS::EC2::NatGateway",
+    },
+    "NetworkingVpcPublicSubnet1RouteTable8FB3C18A": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PublicSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkingVpcPublicSubnet1RouteTableAssociationD13830EA": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "NetworkingVpcPublicSubnet1RouteTable8FB3C18A",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPublicSubnet1Subnet918289EE",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkingVpcPublicSubnet1Subnet918289EE": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.100.0.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PublicSubnet1",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkingVpcPublicSubnet2DefaultRouteDF98F60F": {
+      "DependsOn": [
+        "NetworkingVpcVPCGW12E561D8",
+      ],
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "NetworkingVpcIGW21218DAB",
+        },
+        "RouteTableId": {
+          "Ref": "NetworkingVpcPublicSubnet2RouteTable22886677",
+        },
+      },
+      "Type": "AWS::EC2::Route",
+    },
+    "NetworkingVpcPublicSubnet2RouteTable22886677": {
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PublicSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::RouteTable",
+    },
+    "NetworkingVpcPublicSubnet2RouteTableAssociation2D4CEA06": {
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "NetworkingVpcPublicSubnet2RouteTable22886677",
+        },
+        "SubnetId": {
+          "Ref": "NetworkingVpcPublicSubnet2Subnet9D9E5AFB",
+        },
+      },
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+    },
+    "NetworkingVpcPublicSubnet2Subnet9D9E5AFB": {
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": "",
+            },
+          ],
+        },
+        "CidrBlock": "10.100.1.0/24",
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public",
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public",
+          },
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc/PublicSubnet2",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::Subnet",
+    },
+    "NetworkingVpcS3GWEndpointA935E1AA": {
+      "Properties": {
+        "RouteTableIds": [
+          {
+            "Ref": "NetworkingVpcPrivateSubnet1RouteTable69CC9A73",
+          },
+          {
+            "Ref": "NetworkingVpcPrivateSubnet2RouteTableAE92CE40",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1RouteTable2C1558E9",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2RouteTableA434E57C",
+          },
+        ],
+        "ServiceName": {
+          "Fn::Join": [
+            "",
+            [
+              "com.amazonaws.",
+              {
+                "Ref": "AWS::Region",
+              },
+              ".s3",
+            ],
+          ],
+        },
+        "VpcEndpointType": "Gateway",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkingVpcSsmEndpoint054488E3": {
+      "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NetworkingVpcSsmEndpointSecurityGroup897B24DC",
+              "GroupId",
+            ],
+          },
+        ],
+        "ServiceName": "com.amazonaws.ap-northeast-1.ssm",
+        "SubnetIds": [
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+          },
+        ],
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkingVpcSsmEndpointSecurityGroup897B24DC": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/Networking/Vpc/SsmEndpoint/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "NetworkingVpc6B5E6F44",
+                "CidrBlock",
+              ],
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "NetworkingVpc6B5E6F44",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "NetworkingVpcSsmMessagesEndpointDA21F821": {
+      "Properties": {
+        "PrivateDnsEnabled": true,
+        "SecurityGroupIds": [
+          {
+            "Fn::GetAtt": [
+              "NetworkingVpcSsmMessagesEndpointSecurityGroup4F815FEB",
+              "GroupId",
+            ],
+          },
+        ],
+        "ServiceName": "com.amazonaws.ap-northeast-1.ssmmessages",
+        "SubnetIds": [
+          {
+            "Ref": "NetworkingVpcProtectedSubnet1SubnetF97DE33B",
+          },
+          {
+            "Ref": "NetworkingVpcProtectedSubnet2SubnetE110C692",
+          },
+        ],
+        "VpcEndpointType": "Interface",
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCEndpoint",
+    },
+    "NetworkingVpcSsmMessagesEndpointSecurityGroup4F815FEB": {
+      "Properties": {
+        "GroupDescription": "Dev-BLEAEcsApp/Networking/Vpc/SsmMessagesEndpoint/SecurityGroup",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": {
+              "Fn::GetAtt": [
+                "NetworkingVpc6B5E6F44",
+                "CidrBlock",
+              ],
+            },
+            "Description": {
+              "Fn::Join": [
+                "",
+                [
+                  "from ",
+                  {
+                    "Fn::GetAtt": [
+                      "NetworkingVpc6B5E6F44",
+                      "CidrBlock",
+                    ],
+                  },
+                  ":443",
+                ],
+              ],
+            },
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "Dev-BLEAEcsApp/Networking/Vpc",
+          },
+        ],
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "NetworkingVpcVPCGW12E561D8": {
+      "Properties": {
+        "InternetGatewayId": {
+          "Ref": "NetworkingVpcIGW21218DAB",
+        },
+        "VpcId": {
+          "Ref": "NetworkingVpc6B5E6F44",
+        },
+      },
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`Snapshot test for BLEA ECS App Stacks 2`] = `
+{
+  "Outputs": {
+    "ExportsOutputFnGetAttFrontendDistributionC0C89627DomainName78150ED0": {
+      "Export": {
+        "Name": "Dev-BLEAEcsAppFrontend:ExportsOutputFnGetAttFrontendDistributionC0C89627DomainName78150ED0",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "FrontendDistributionC0C89627",
+          "DomainName",
+        ],
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "CustomCrossRegionExportReaderCustomResourceProviderHandler46647B68": {
+      "DependsOn": [
+        "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
+          },
+          "S3Key": "HASH-REPLACED.zip",
+        },
+        "Handler": "__entrypoint__.handler",
+        "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs20.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "ssm:AddTagsToResource",
+                    "ssm:RemoveTagsFromResource",
+                    "ssm:GetParameters",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":ssm:us-east-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":parameter/cdk/exports/Dev-BLEAEcsAppFrontend/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "Inline",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCrossRegionExportWriterCustomResourceProviderHandlerD8786E8A": {
+      "DependsOn": [
+        "CustomCrossRegionExportWriterCustomResourceProviderRoleC951B1E1",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-us-east-1",
+          },
+          "S3Key": "HASH-REPLACED.zip",
+        },
+        "Handler": "__entrypoint__.handler",
+        "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCrossRegionExportWriterCustomResourceProviderRoleC951B1E1",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs20.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCrossRegionExportWriterCustomResourceProviderRoleC951B1E1": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "ssm:DeleteParameters",
+                    "ssm:ListTagsForResource",
+                    "ssm:GetParameters",
+                    "ssm:PutParameter",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:",
+                          {
+                            "Ref": "AWS::Partition",
+                          },
+                          ":ssm:ap-northeast-1:",
+                          {
+                            "Ref": "AWS::AccountId",
+                          },
+                          ":parameter/cdk/exports/*",
+                        ],
+                      ],
+                    },
+                  ],
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "Inline",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ExportsReader8B249524": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "ReaderProps": {
+          "imports": {
+            "/cdk/exports/Dev-BLEAEcsAppFrontend/DevBLEAEcsAppapnortheast1FnGetAttEcsAppAlb74CC21B3DNSNameDDC2F343": "{{resolve:ssm:/cdk/exports/Dev-BLEAEcsAppFrontend/DevBLEAEcsAppapnortheast1FnGetAttEcsAppAlb74CC21B3DNSNameDDC2F343}}",
+          },
+          "prefix": "Dev-BLEAEcsAppFrontend",
+          "region": "us-east-1",
+        },
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCrossRegionExportReaderCustomResourceProviderHandler46647B68",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::CrossRegionExportReader",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "ExportsWriterapnortheast12334E1B81D43DF3F": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCrossRegionExportWriterCustomResourceProviderHandlerD8786E8A",
+            "Arn",
+          ],
+        },
+        "WriterProps": {
+          "exports": {
+            "/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1FnGetAttFrontendDistributionC0C89627DomainName34318E09": {
+              "Fn::GetAtt": [
+                "FrontendDistributionC0C89627",
+                "DomainName",
+              ],
+            },
+            "/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1RefFrontendDistributionC0C89627E26C774F": {
+              "Ref": "FrontendDistributionC0C89627",
+            },
+          },
+          "region": "ap-northeast-1",
+        },
+      },
+      "Type": "Custom::CrossRegionExportWriter",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "FrontendCloudFrontLogBucket688801AF": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccessControl": "Private",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "OwnershipControls": {
+          "Rules": [
+            {
+              "ObjectOwnership": "ObjectWriter",
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "FrontendCloudFrontLogBucketPolicy7FCDBABE": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "FrontendCloudFrontLogBucket688801AF",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "FrontendCloudFrontLogBucket688801AF",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "FrontendCloudFrontLogBucket688801AF",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "FrontendDistributionC0C89627": {
+      "Properties": {
+        "DistributionConfig": {
+          "CacheBehaviors": [
+            {
+              "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+              "Compress": true,
+              "PathPattern": "/static/*",
+              "TargetOriginId": "DevBLEAEcsAppFrontendDistributionOrigin2FA686FE7",
+              "ViewerProtocolPolicy": "redirect-to-https",
+            },
+          ],
+          "CustomErrorResponses": [
+            {
+              "ErrorCachingMinTTL": 20,
+              "ErrorCode": 403,
+              "ResponseCode": 403,
+              "ResponsePagePath": "/static/sorry.html",
+            },
+          ],
+          "DefaultCacheBehavior": {
+            "AllowedMethods": [
+              "GET",
+              "HEAD",
+              "OPTIONS",
+              "PUT",
+              "PATCH",
+              "POST",
+              "DELETE",
+            ],
+            "CachePolicyId": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+            "Compress": true,
+            "OriginRequestPolicyId": "216adef6-5c7f-47e4-b989-5492eafa07d3",
+            "TargetOriginId": "DevBLEAEcsAppFrontendDistributionOrigin1B126A7CF",
+            "ViewerProtocolPolicy": "https-only",
+          },
+          "DefaultRootObject": "/",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Logging": {
+            "Bucket": {
+              "Fn::GetAtt": [
+                "FrontendCloudFrontLogBucket688801AF",
+                "RegionalDomainName",
+              ],
+            },
+            "IncludeCookies": true,
+            "Prefix": "CloudFrontAccessLogs/",
+          },
+          "Origins": [
+            {
+              "CustomOriginConfig": {
+                "OriginProtocolPolicy": "http-only",
+                "OriginSSLProtocols": [
+                  "TLSv1.2",
+                ],
+              },
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "ExportsReader8B249524",
+                  "/cdk/exports/Dev-BLEAEcsAppFrontend/DevBLEAEcsAppapnortheast1FnGetAttEcsAppAlb74CC21B3DNSNameDDC2F343",
+                ],
+              },
+              "Id": "DevBLEAEcsAppFrontendDistributionOrigin1B126A7CF",
+            },
+            {
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "FrontendWebContentBucketCD12DDF8",
+                  "RegionalDomainName",
+                ],
+              },
+              "Id": "DevBLEAEcsAppFrontendDistributionOrigin2FA686FE7",
+              "S3OriginConfig": {
+                "OriginAccessIdentity": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      {
+                        "Ref": "FrontendDistributionOrigin2S3OriginFE05A78D",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "WebACLId": {
+            "Fn::GetAtt": [
+              "FrontendWebAclFA218467",
+              "Arn",
+            ],
+          },
+        },
+      },
+      "Type": "AWS::CloudFront::Distribution",
+    },
+    "FrontendDistributionOrigin2S3OriginFE05A78D": {
+      "Properties": {
+        "CloudFrontOriginAccessIdentityConfig": {
+          "Comment": "Identity for DevBLEAEcsAppFrontendDistributionOrigin2FA686FE7",
+        },
+      },
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    },
+    "FrontendWebAclFA218467": {
+      "Properties": {
+        "DefaultAction": {
+          "Allow": {},
+        },
+        "Name": "DevBLEAEcsAppFrontend07EAA01E",
+        "Rules": [
+          {
+            "Name": "AWSManagedRulesCommonRuleSet",
+            "OverrideAction": {
+              "Count": {},
+            },
+            "Priority": 1,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesCommonRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesCommonRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          {
+            "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+            "OverrideAction": {
+              "Count": {},
+            },
+            "Priority": 2,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesKnownBadInputsRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          {
+            "Name": "AWSManagedRulesAmazonIpReputationList",
+            "OverrideAction": {
+              "Count": {},
+            },
+            "Priority": 3,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesAmazonIpReputationList",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesAmazonIpReputationList",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          {
+            "Name": "AWSManagedRulesLinuxRuleSet",
+            "OverrideAction": {
+              "Count": {},
+            },
+            "Priority": 4,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesLinuxRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesLinuxRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+          {
+            "Name": "AWSManagedRulesSQLiRuleSet",
+            "OverrideAction": {
+              "Count": {},
+            },
+            "Priority": 5,
+            "Statement": {
+              "ManagedRuleGroupStatement": {
+                "Name": "AWSManagedRulesSQLiRuleSet",
+                "VendorName": "AWS",
+              },
+            },
+            "VisibilityConfig": {
+              "CloudWatchMetricsEnabled": true,
+              "MetricName": "AWS-AWSManagedRulesSQLiRuleSet",
+              "SampledRequestsEnabled": true,
+            },
+          },
+        ],
+        "Scope": "CLOUDFRONT",
+        "VisibilityConfig": {
+          "CloudWatchMetricsEnabled": true,
+          "MetricName": "DevBLEAEcsAppFrontend07EAA01E",
+          "SampledRequestsEnabled": true,
+        },
+      },
+      "Type": "AWS::WAFv2::WebACL",
+    },
+    "FrontendWebContentBucketCD12DDF8": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccessControl": "Private",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "VersioningConfiguration": {
+          "Status": "Enabled",
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "FrontendWebContentBucketPolicyC7AADD3B": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "FrontendWebContentBucketCD12DDF8",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "FrontendWebContentBucketCD12DDF8",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "FrontendWebContentBucketCD12DDF8",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "FrontendDistributionOrigin2S3OriginFE05A78D",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "FrontendWebContentBucketCD12DDF8",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;
+
+exports[`Snapshot test for BLEA ECS App Stacks 3`] = `
+{
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "CanaryCanalyPolicy0AA33B6D": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:GetBucketLocation",
+              "Effect": "Allow",
+              "Resource": {
+                "Fn::GetAtt": [
+                  "CanaryCanaryArtifactBucket0C98EA34",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CanaryCanalyPolicy0AA33B6D",
+        "Roles": [
+          {
+            "Ref": "CanaryServiceRole6F4F0A66",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "CanaryCanaryArtifactBucket0C98EA34": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AccessControl": "Private",
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256",
+              },
+            },
+          ],
+        },
+        "PublicAccessBlockConfiguration": {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "CanaryCanaryArtifactBucketPolicy001FA701": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "CanaryCanaryArtifactBucket0C98EA34",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": "false",
+                },
+              },
+              "Effect": "Deny",
+              "Principal": {
+                "AWS": "*",
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "CanaryCanaryArtifactBucket0C98EA34",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "CanaryCanaryArtifactBucket0C98EA34",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "CanaryCanaryDurationAlarm9CB7D45A": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefMonitoringAlarmTopicAF62D4F1C969DD35",
+          },
+        ],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "DatapointsToAlarm": 2,
+        "Dimensions": [
+          {
+            "Name": "CanaryName",
+            "Value": {
+              "Ref": "CanaryFA053226",
+            },
+          },
+        ],
+        "EvaluationPeriods": 2,
+        "MetricName": "Duration",
+        "Namespace": "CloudWatchSynthetics",
+        "Period": 60,
+        "Statistic": "Average",
+        "Threshold": 400,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "CanaryCanaryFailedAlarm6F0AEBED": {
+      "Properties": {
+        "ActionsEnabled": true,
+        "AlarmActions": [
+          {
+            "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefMonitoringAlarmTopicAF62D4F1C969DD35",
+          },
+        ],
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "DatapointsToAlarm": 3,
+        "Dimensions": [
+          {
+            "Name": "CanaryName",
+            "Value": {
+              "Ref": "CanaryFA053226",
+            },
+          },
+        ],
+        "EvaluationPeriods": 3,
+        "MetricName": "Failed",
+        "Namespace": "CloudWatchSynthetics",
+        "Period": 60,
+        "Statistic": "Average",
+        "Threshold": 0.5,
+        "TreatMissingData": "notBreaching",
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "CanaryFA053226": {
+      "Properties": {
+        "ArtifactS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "CanaryCanaryArtifactBucket0C98EA34",
+              },
+            ],
+          ],
+        },
+        "Code": {
+          "Handler": "index.handler",
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-ap-northeast-1",
+          },
+          "S3Key": "HASH-REPLACED.zip",
+        },
+        "ExecutionRoleArn": {
+          "Fn::GetAtt": [
+            "CanaryServiceRole6F4F0A66",
+            "Arn",
+          ],
+        },
+        "Name": "devbleaecsappmo8d5431",
+        "RunConfig": {
+          "EnvironmentVariables": {
+            "TARGETHOST": {
+              "Fn::GetAtt": [
+                "ExportsReader8B249524",
+                "/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1FnGetAttFrontendDistributionC0C89627DomainName34318E09",
+              ],
+            },
+            "TARGETPATH": "/",
+          },
+        },
+        "RuntimeVersion": "syn-nodejs-puppeteer-6.0",
+        "Schedule": {
+          "DurationInSeconds": "0",
+          "Expression": "rate(1 minute)",
+        },
+        "StartCanaryAfterCreation": true,
+      },
+      "Type": "AWS::Synthetics::Canary",
+    },
+    "CanaryServiceRole6F4F0A66": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": "s3:ListAllMyBuckets",
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": "s3:GetBucketLocation",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::GetAtt": [
+                      "CanaryCanaryArtifactBucket0C98EA34",
+                      "Arn",
+                    ],
+                  },
+                },
+                {
+                  "Action": "s3:PutObject",
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        {
+                          "Fn::GetAtt": [
+                            "CanaryCanaryArtifactBucket0C98EA34",
+                            "Arn",
+                          ],
+                        },
+                        "/*",
+                      ],
+                    ],
+                  },
+                },
+                {
+                  "Action": "cloudwatch:PutMetricData",
+                  "Condition": {
+                    "StringEquals": {
+                      "cloudwatch:namespace": "CloudWatchSynthetics",
+                    },
+                  },
+                  "Effect": "Allow",
+                  "Resource": "*",
+                },
+                {
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:CreateLogGroup",
+                    "logs:PutLogEvents",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":logs:ap-northeast-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":log-group:/aws/lambda/cwsyn-*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "canaryPolicy",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCrossRegionExportReaderCustomResourceProviderHandler46647B68": {
+      "DependsOn": [
+        "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-ap-northeast-1",
+          },
+          "S3Key": "HASH-REPLACED.zip",
+        },
+        "Handler": "__entrypoint__.handler",
+        "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs20.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCrossRegionExportReaderCustomResourceProviderRole10531BBD": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
+        "Policies": [
+          {
+            "PolicyDocument": {
+              "Statement": [
+                {
+                  "Action": [
+                    "ssm:AddTagsToResource",
+                    "ssm:RemoveTagsFromResource",
+                    "ssm:GetParameters",
+                  ],
+                  "Effect": "Allow",
+                  "Resource": {
+                    "Fn::Join": [
+                      "",
+                      [
+                        "arn:",
+                        {
+                          "Ref": "AWS::Partition",
+                        },
+                        ":ssm:ap-northeast-1:",
+                        {
+                          "Ref": "AWS::AccountId",
+                        },
+                        ":parameter/cdk/exports/Dev-BLEAEcsAppMonitoring/*",
+                      ],
+                    ],
+                  },
+                },
+              ],
+              "Version": "2012-10-17",
+            },
+            "PolicyName": "Inline",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "Dashboard7A714131": {
+      "Properties": {
+        "DashboardBody": {
+          "Fn::Join": [
+            "",
+            [
+              "{"widgets":[{"type":"text","width":24,"height":1,"x":0,"y":0,"properties":{"markdown":"# Canary"}},{"type":"metric","width":12,"height":6,"x":0,"y":1,"properties":{"view":"timeSeries","title":"Canary response time","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","annotations":{"alarms":["",
+              {
+                "Fn::GetAtt": [
+                  "CanaryCanaryDurationAlarm9CB7D45A",
+                  "Arn",
+                ],
+              },
+              ""]},"yAxis":{}}},{"type":"metric","width":12,"height":6,"x":12,"y":1,"properties":{"view":"timeSeries","title":"Canary request failed","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","annotations":{"alarms":["",
+              {
+                "Fn::GetAtt": [
+                  "CanaryCanaryFailedAlarm6F0AEBED",
+                  "Arn",
+                ],
+              },
+              ""]},"yAxis":{}}},{"type":"text","width":24,"height":1,"x":0,"y":7,"properties":{"markdown":"# Requests"}},{"type":"metric","width":6,"height":6,"x":0,"y":8,"properties":{"view":"timeSeries","title":"CloudFront Requests","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/CloudFront","Requests","DistributionId","",
+              {
+                "Fn::GetAtt": [
+                  "ExportsReader8B249524",
+                  "/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1RefFrontendDistributionC0C89627E26C774F",
+                ],
+              },
+              "","Region","Global",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","region":"us-east-1","period":60,"stat":"Sum"}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":6,"y":8,"properties":{"view":"timeSeries","title":"ALB Requests","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/ApplicationELB","RequestCount","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["AWS/ApplicationELB","NewConnectionCount","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["AWS/ApplicationELB","RejectedConnectionCount","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":12,"y":8,"properties":{"view":"timeSeries","title":"Target Group Requests","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/ApplicationELB","HTTPCode_Target_2XX_Count","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":18,"y":8,"properties":{"view":"timeSeries","title":"Aurora Connections","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/RDS","DatabaseConnections","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"Writer: \${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["AWS/RDS","DatabaseConnections","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","READER",{"label":"Reader: \${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}]],"yAxis":{}}},{"type":"text","width":24,"height":1,"x":0,"y":14,"properties":{"markdown":"# Response Time"}},{"type":"metric","width":8,"height":6,"x":0,"y":15,"properties":{"view":"timeSeries","title":"Target Group Response Time","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/ApplicationELB","TargetResponseTime","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}]],"yAxis":{}}},{"type":"metric","width":8,"height":6,"x":8,"y":15,"properties":{"view":"timeSeries","title":"Aurora Operation Lantency (Writer)","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/RDS","InsertLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","SelectLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","UpdateLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","CommitLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","DDLLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","DeleteLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","DMLLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","ReadLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"yAxis":"right"}],["AWS/RDS","WriteLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"yAxis":"right"}]],"yAxis":{}}},{"type":"metric","width":8,"height":6,"x":16,"y":15,"properties":{"view":"timeSeries","title":"Aurora Operation Lantency (Reader)","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/RDS","SelectLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","READER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","ReadLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","READER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"yAxis":"right"}],["AWS/RDS","WriteLatency","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","READER",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"yAxis":"right"}]],"yAxis":{}}},{"type":"text","width":24,"height":1,"x":0,"y":21,"properties":{"markdown":"# Errors"}},{"type":"metric","width":6,"height":6,"x":0,"y":22,"properties":{"view":"timeSeries","title":"CloudFront Error Rates","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":true,"metrics":[["AWS/CloudFront","5xxErrorRate","DistributionId","",
+              {
+                "Fn::GetAtt": [
+                  "ExportsReader8B249524",
+                  "/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1RefFrontendDistributionC0C89627E26C774F",
+                ],
+              },
+              "","Region","Global",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","region":"us-east-1","period":60}],["AWS/CloudFront","4xxErrorRate","DistributionId","",
+              {
+                "Fn::GetAtt": [
+                  "ExportsReader8B249524",
+                  "/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1RefFrontendDistributionC0C89627E26C774F",
+                ],
+              },
+              "","Region","Global",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","region":"us-east-1","period":60}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":6,"y":22,"properties":{"view":"timeSeries","title":"ALB Errors","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/ApplicationELB","ClientTLSNegotiationErrorCount","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["AWS/ApplicationELB","HTTPCode_ELB_5XX_Count","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["AWS/ApplicationELB","HTTPCode_ELB_4XX_Count","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":12,"y":22,"properties":{"view":"timeSeries","title":"Alarm for UnHealthy Host in Target Group","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","annotations":{"alarms":["",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlbTgUnHealthyHostCount0E9D8FD9Arn7BD25624",
+              },
+              ""]},"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":18,"y":22,"properties":{"view":"timeSeries","title":"Target Group Errors","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":true,"metrics":[["AWS/ApplicationELB","HTTPCode_Target_5XX_Count","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["AWS/ApplicationELB","HTTPCode_Target_4XX_Count","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["AWS/ApplicationELB","TargetConnectionErrorCount","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["AWS/ApplicationELB","TargetTLSNegotiationErrorCount","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}]],"yAxis":{}}},{"type":"text","width":24,"height":1,"x":0,"y":28,"properties":{"markdown":"# Resources"}},{"type":"metric","width":6,"height":6,"x":0,"y":29,"properties":{"view":"timeSeries","title":"ECS CPU Utilization","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/ECS","CPUUtilization","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":6,"y":29,"properties":{"view":"timeSeries","title":"ECS Memory Utilization","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/ECS","MemoryUtilization","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":12,"y":29,"properties":{"view":"timeSeries","title":"ECS Desired Task Count","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["ECS/ContainerInsights","DesiredTaskCount","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":18,"y":29,"properties":{"view":"timeSeries","title":"ECS Task Count","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":true,"metrics":[["ECS/ContainerInsights","RunningTaskCount","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["ECS/ContainerInsights","PendingTaskCount","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}]],"yAxis":{}}},{"type":"metric","width":12,"height":6,"x":0,"y":35,"properties":{"view":"timeSeries","title":"ECS Auto Scaling with Requests per tasks","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/ApplicationELB","RequestCountPerTarget","LoadBalancer","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlb74CC21B3LoadBalancerFullName06D09417",
+              },
+              "","TargetGroup","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppAlbAlbSslListenerAppTargetGroupGroup00D988B0TargetGroupNameC50313E4",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"stat":"Sum"}],["ECS/ContainerInsights","RunningTaskCount","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"yAxis":"right"}],["ECS/ContainerInsights","PendingTaskCount","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"yAxis":"right"}]],"annotations":{"horizontal":[{"value":10000,"label":"Threshold: Requests per tasks","color":"#aec7e8","fill":"below","yAxis":"left"}]},"yAxis":{}}},{"type":"metric","width":12,"height":6,"x":12,"y":35,"properties":{"view":"timeSeries","title":"ECS Auto Scaling with CPU Utilization","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/ECS","CPUUtilization","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["ECS/ContainerInsights","RunningTaskCount","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"yAxis":"right"}],["ECS/ContainerInsights","PendingTaskCount","ClusterName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefEcsAppCluster7C7DF57BDB05AF68",
+              },
+              "","ServiceName","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputFnGetAttEcsAppServiceABC8901FName20F6B0C5",
+              },
+              "",{"label":"\${PROP('MetricName')} /\${PROP('Period')}sec","period":60,"yAxis":"right"}]],"annotations":{"horizontal":[{"value":50,"label":"Threshold: CPU Utilization","color":"#aec7e8","fill":"below","yAxis":"left"}]},"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":0,"y":41,"properties":{"view":"timeSeries","title":"Aurora CPU Utilization","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/RDS","CPUUtilization","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"Writer: \${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","CPUUtilization","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","READER",{"label":"Reader: \${PROP('MetricName')} /\${PROP('Period')}sec","period":60}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":6,"y":41,"properties":{"view":"timeSeries","title":"Aurora Free Memory","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/RDS","FreeableMemory","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"Writer: \${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","FreeableMemory","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","READER",{"label":"Reader: \${PROP('MetricName')} /\${PROP('Period')}sec","period":60}]],"yAxis":{}}},{"type":"metric","width":6,"height":6,"x":12,"y":41,"properties":{"view":"timeSeries","title":"Aurora Free Local Storage","region":"",
+              {
+                "Ref": "AWS::Region",
+              },
+              "","stacked":false,"metrics":[["AWS/RDS","FreeLocalStorage","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","WRITER",{"label":"Writer: \${PROP('MetricName')} /\${PROP('Period')}sec","period":60}],["AWS/RDS","FreeLocalStorage","DBClusterIdentifier","",
+              {
+                "Fn::ImportValue": "Dev-BLEAEcsApp:ExportsOutputRefDatastoreAuroraCluster2FE23DD58102FDEF",
+              },
+              "","Role","READER",{"label":"Reader: \${PROP('MetricName')} /\${PROP('Period')}sec","period":60}]],"yAxis":{}}}]}",
+            ],
+          ],
+        },
+        "DashboardName": "BLEA-ECS-App-Sample",
+      },
+      "Type": "AWS::CloudWatch::Dashboard",
+    },
+    "ExportsReader8B249524": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "ReaderProps": {
+          "imports": {
+            "/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1FnGetAttFrontendDistributionC0C89627DomainName34318E09": "{{resolve:ssm:/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1FnGetAttFrontendDistributionC0C89627DomainName34318E09}}",
+            "/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1RefFrontendDistributionC0C89627E26C774F": "{{resolve:ssm:/cdk/exports/Dev-BLEAEcsAppMonitoring/DevBLEAEcsAppFrontenduseast1RefFrontendDistributionC0C89627E26C774F}}",
+          },
+          "prefix": "Dev-BLEAEcsAppMonitoring",
+          "region": "ap-northeast-1",
+        },
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCrossRegionExportReaderCustomResourceProviderHandler46647B68",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::CrossRegionExportReader",
+      "UpdateReplacePolicy": "Delete",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

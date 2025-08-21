@@ -1,0 +1,33 @@
+{
+  "private": true,
+  "name": "blea-guest-ecs-app-sample",
+  "version": "1.0.0",
+  "description": "Sample web application with BLEA",
+  "license": "MIT-0",
+  "bin": {
+    "blea-guest-ecs-app-sample": "bin/blea-guest-ecs-app-sample.js"
+  },
+  "scripts": {
+    "synth": "cdk synth -q && npm run synth:pipelines",
+    "synth:pipelines": "cdk synth -q --app \"npx ts-node --prefer-ts-exts bin/blea-guest-ecs-app-sample-via-cdk-pipelines.ts\"",
+    "build": "tsc --build",
+    "clean": "tsc --build --clean && rm -f parameter.js parameter.d.ts && rm -rf cdk.out",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.14",
+    "@types/node": "18.19.120",
+    "aws-cdk": "^2.1022.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.8.3"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.173.4",
+    "constructs": "^10.4.2",
+    "source-map-support": "^0.5.21"
+  }
+}
