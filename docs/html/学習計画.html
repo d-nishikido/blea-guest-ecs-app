@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チーム③テーマおよび計画</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "Hiragino Sans", "Yu Gothic", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        h1 {
+            color: #232F3E;
+            border-bottom: 3px solid #FF9900;
+            padding-bottom: 10px;
+            margin-top: 30px;
+        }
+        
+        h2 {
+            color: #232F3E;
+            border-bottom: 2px solid #FF9900;
+            padding-bottom: 8px;
+            margin-top: 25px;
+        }
+        
+        h3 {
+            color: #232F3E;
+            margin-top: 20px;
+        }
+        
+        h4 {
+            color: #555;
+            margin-top: 15px;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 15px 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        th {
+            background-color: #232F3E;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+        
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: "Courier New", monospace;
+            font-size: 0.9em;
+        }
+        
+        pre {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+        
+        ul, ol {
+            margin: 10px 0;
+            padding-left: 30px;
+        }
+        
+        li {
+            margin: 5px 0;
+        }
+        
+        .toc {
+            background-color: white;
+            border: 2px solid #FF9900;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .toc h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #FF9900;
+            padding-bottom: 10px;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .toc a {
+            color: #232F3E;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            color: #FF9900;
+            text-decoration: underline;
+        }
+        
+        .note {
+            background-color: #fff3cd;
+            border-left: 4px solid #FF9900;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        
+        .important {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        
+        .success {
+            background-color: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        
+        hr {
+            border: none;
+            border-top: 2px solid #ddd;
+            margin: 30px 0;
+        }
+        
+        .timeline {
+            background-color: white;
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .month-section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 4px solid #FF9900;
+            background-color: #f8f9fa;
+        }
+        
+        .deliverables {
+            background-color: #e7f3ff;
+            border: 1px solid #b3d7ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .deliverables h4 {
+            color: #0056b3;
+            margin-top: 0;
+        }
+        
+        .resources {
+            background-color: #f0fff4;
+            border: 1px solid #90ee90;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>チーム③テーマおよび計画</h1>
+    
+    <div class="toc">
+        <h2>目次</h2>
+        <ul>
+            <li><a href="#section1">1. 概要</a>
+                <ul>
+                    <li><a href="#section1-1">1.1 テーマ</a></li>
+                    <li><a href="#section1-2">1.2 期間</a></li>
+                    <li><a href="#section1-3">1.3 目標</a></li>
+                    <li><a href="#section1-4">1.4 成果物</a></li>
+                </ul>
+            </li>
+            <li><a href="#section2">2. 計画</a>
+                <ul>
+                    <li><a href="#section2-1">2025年10月：基礎学習とIaC調査</a></li>
+                    <li><a href="#section2-2">2025年11月：BLEA ECSアプリケーション解析</a></li>
+                    <li><a href="#section2-3">2025年12月：初回デプロイと動作確認</a></li>
+                    <li><a href="#section2-4">2026年1月：運用と最適化の調査</a></li>
+                    <li><a href="#section2-5">2026年2,3月：総括と報告資料作成</a></li>
+                </ul>
+            </li>
+            <li><a href="#section3">3. 学習リソース</a></li>
+            <li><a href="#section4">4. 最終成果物一覧</a></li>
+        </ul>
+    </div>
+
+    <h2 id="section1">1. 概要</h2>
+    
+    <h3 id="section1-1">1.1 テーマ</h3>
+    <p><strong>主題</strong>: BLEA ECSサンプルアプリケーションの解析を通して、BLEAの各種設定を調査、各種セキュリティサービスの理解およびセキュリティベストプラクティスの深堀</p>
+    
+    <p><strong>副題</strong>: CI/CD・IaC（CDK）の調査とサンプル提供</p>
+    
+    <h3 id="section1-2">1.2 期間</h3>
+    <div class="important">
+        <strong>2025年9月〜2026年3月</strong>
+    </div>
+    
+    <h3 id="section1-3">1.3 目標</h3>
+    <ol>
+        <li>AWS CDKを使用したInfrastructure as Codeの実践的理解</li>
+        <li>BLEAによるセキュリティベストプラクティスの習得</li>
+        <li>AWSセキュリティサービスの理解</li>
+        <li>CI/CDパイプラインの設計・実装能力の向上</li>
+    </ol>
+    
+    <h3 id="section1-4">1.4 成果物</h3>
+    <ul>
+        <li>IaC（CDK）調査資料とサンプルコード</li>
+        <li>BLEA ECSアプリケーションの詳細解析レポート</li>
+        <li>セキュリティベストプラクティスレポート</li>
+        <li>デプロイメント手順書</li>
+        <li>コスト分析レポート</li>
+        <li>最終報告プレゼンテーション資料</li>
+    </ul>
+    
+    <h2 id="section2">2. 計画</h2>
+    
+    <div class="timeline">
+        <div class="month-section">
+            <h3 id="section2-1">基礎学習とIaC調査</h3>
+            
+            <h4>AWS CDK基礎学習</h4>
+            <ul>
+                <li><input type="checkbox"> CDKの概念理解（スタック、コンストラクト、アプリ）</li>
+                <li><input type="checkbox"> TypeScript基礎（CDKで使用する範囲）</li>
+                <li><input type="checkbox"> CDK CLIの使い方</li>
+                <li><input type="checkbox"> CDK Workshopの実施（任意）</li>
+            </ul>
+            
+            <h4>VPCとネットワーク構成のCDK実装</h4>
+            <ul>
+                <li><input type="checkbox"> VPC作成のCDKコード作成</li>
+                <li><input type="checkbox"> サブネット設計と実装</li>
+                <li><input type="checkbox"> ルートテーブル、NATゲートウェイの理解（任意）</li>
+                <li><input type="checkbox"> サンプルコード作成と動作確認</li>
+            </ul>
+            
+            <h4>EC2とセキュリティグループのCDK実装</h4>
+            <ul>
+                <li><input type="checkbox"> EC2インスタンスのCDK定義</li>
+                <li><input type="checkbox"> セキュリティグループの設計パターン</li>
+                <li><input type="checkbox"> IAMロールの作成と管理（任意）</li>
+                <li><input type="checkbox"> サンプルコード作成と動作確認</li>
+            </ul>
+            
+            <h4>調査資料作成</h4>
+            <ul>
+                <li><input type="checkbox"> IaC（CDK）調査資料の作成</li>
+                <li><input type="checkbox"> VPC、サブネット、EC2のサンプルコード整理</li>
+            </ul>
+            
+            <div class="deliverables">
+                <h4>成果物</h4>
+                <ul>
+                    <li>📄 IaC_CDK調査資料</li>
+                    <li>📁 samples/basic-infrastructure/
+                        <ul>
+                            <li>vpc-sample.ts</li>
+                            <li>ec2-sample.ts</li>
+                            <li>security-group-sample.ts</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="month-section">
+            <h3 id="section2-2">BLEA ECSアプリケーション解析</h3>
+            
+            <h4>BLEA概要理解</h4>
+            <ul>
+                <li><input type="checkbox"> BLEAアーキテクチャの全体像把握</li>
+                <li><input type="checkbox"> セキュリティ設計思想の理解</li>
+                <li><input type="checkbox"> Well-Architected Frameworkとの関連性調査</li>
+            </ul>
+            
+            <h4>コンストラクト詳細解析</h4>
+            <ul>
+                <li><input type="checkbox"> Networkingコンストラクトの解析</li>
+                <li><input type="checkbox"> Datastoreコンストラクトの解析</li>
+                <li><input type="checkbox"> EcsAppコンストラクトの解析</li>
+                <li><input type="checkbox"> 各コンストラクトの設計意図理解</li>
+            </ul>
+            
+            <h4>スタック構造解析</h4>
+            <ul>
+                <li><input type="checkbox"> Backend Stackの詳細解析</li>
+                <li><input type="checkbox"> Frontend Stackの詳細解析</li>
+                <li><input type="checkbox"> Monitoring Stackの詳細解析</li>
+                <li><input type="checkbox"> スタック間の依存関係マッピング</li>
+            </ul>
+            
+            <h4>セキュリティ機能解析</h4>
+            <ul>
+                <li><input type="checkbox"> KMS暗号化の実装詳細</li>
+                <li><input type="checkbox"> WAFルールセットの解析</li>
+                <li><input type="checkbox"> IAMロールとポリシーの解析</li>
+                <li><input type="checkbox"> ネットワークセキュリティの実装詳細</li>
+            </ul>
+            
+            <div class="deliverables">
+                <h4>成果物</h4>
+                <ul>
+                    <li>📄 BLEA_ECS_アーキテクチャ解析レポート</li>
+                    <li>📄 セキュリティ実装詳細</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="month-section">
+            <h3 id="section2-3">初回デプロイと動作確認</h3>
+            
+            <h4>デプロイ準備</h4>
+            <ul>
+                <li><input type="checkbox"> AWS環境のセットアップ</li>
+                <li><input type="checkbox"> parameter.tsの設定</li>
+                <li><input type="checkbox"> CDKブートストラップ</li>
+                <li><input type="checkbox"> 必要な権限の確認と設定</li>
+            </ul>
+            
+            <h4>デプロイ実施</h4>
+            <ul>
+                <li><input type="checkbox"> Backend Stackのデプロイ</li>
+                <li><input type="checkbox"> Frontend Stackのデプロイ</li>
+                <li><input type="checkbox"> Monitoring Stackのデプロイ</li>
+                <li><input type="checkbox"> デプロイエラーの対処</li>
+            </ul>
+            
+            <h4>動作確認とトラブルシューティング</h4>
+            <ul>
+                <li><input type="checkbox"> 各サービスの起動確認</li>
+                <li><input type="checkbox"> ログ出力の確認</li>
+                <li><input type="checkbox"> アラーム動作の確認</li>
+            </ul>
+            
+            <h4>コスト分析（1日稼働）</h4>
+            <ul>
+                <li><input type="checkbox"> 各サービスのコスト測定</li>
+                <li><input type="checkbox"> Cost Explorerでの分析</li>
+                <li><input type="checkbox"> 環境の一時停止/削除</li>
+            </ul>
+            
+            <div class="deliverables">
+                <h4>成果物</h4>
+                <ul>
+                    <li>📄 デプロイメント手順書</li>
+                    <li>📄 トラブルシューティングガイド</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="month-section">
+            <h3 id="section2-4">運用と最適化の調査</h3>
+            
+            <h4>運用設定の深堀り</h4>
+            <ul>
+                <li><input type="checkbox"> パラメータの最適化</li>
+                <li><input type="checkbox"> 監視設定のカスタマイズ</li>
+            </ul>
+            
+            <h4>セキュリティ設定の深堀り</h4>
+            <ul>
+                <li><input type="checkbox"> ログ設定の詳細確認と最適化</li>
+                <li><input type="checkbox"> 通知設定のカスタマイズ</li>
+                <li><input type="checkbox"> セキュリティ関連サービスの状態確認</li>
+            </ul>
+            
+            <div class="deliverables">
+                <h4>成果物</h4>
+                <ul>
+                    <li>📄 セキュリティ設定詳細</li>
+                    <li>📄 コスト分析レポート</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="month-section">
+            <h3 id="section2-5">総括と報告資料作成</h3>
+            
+            <h4>学習内容の総括</h4>
+            <ul>
+                <li><input type="checkbox"> 全期間の学習内容整理</li>
+                <li><input type="checkbox"> 得られた知見のまとめ</li>
+            </ul>
+            
+            <h4>最終成果物の作成</h4>
+            <ul>
+                <li><input type="checkbox"> 技術調査報告書の作成</li>
+                <li><input type="checkbox"> サンプルコードの整理とドキュメント化</li>
+                <li><input type="checkbox"> コスト分析最終レポート</li>
+            </ul>
+            
+            <h4>プレゼンテーション資料作成</h4>
+            <ul>
+                <li><input type="checkbox"> サマリースライド作成</li>
+                <li><input type="checkbox"> 技術詳細スライド作成</li>
+                <li><input type="checkbox"> デモシナリオの準備（必要に応じて）</li>
+            </ul>
+            
+            <h4>最終報告とクリーンアップ</h4>
+            <ul>
+                <li><input type="checkbox"> 最終報告プレゼンテーション実施</li>
+                <li><input type="checkbox"> AWS環境のクリーンアップ</li>
+                <li><input type="checkbox"> ナレッジ共有</li>
+            </ul>
+            
+            <div class="deliverables">
+                <h4>成果物</h4>
+                <ul>
+                    <li>📄 セキュリティベストプラクティスレポート</li>
+                    <li>📊 最終報告プレゼンテーション</li>
+                    <li>📁 完成版サンプルコード一式</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <h2 id="section3">3. 学習リソース</h2>
+    
+    <div class="resources">
+        <h3>3.1 公式ドキュメント</h3>
+        <ul>
+            <li><a href="https://docs.aws.amazon.com/cdk/v2/guide/">AWS CDK Developer Guide</a></li>
+            <li><a href="https://github.com/aws-samples/baseline-environment-on-aws">BLEA GitHub Repository</a></li>
+            <li><a href="https://aws.amazon.com/architecture/well-architected/">AWS Well-Architected Framework</a></li>
+            <li><a href="https://aws.amazon.com/security/best-practices/">AWS Security Best Practices</a></li>
+        </ul>
+        
+        <h3>3.2 学習教材</h3>
+        <ul>
+            <li><strong>AWS CDK Workshop</strong>: 実践的なハンズオン</li>
+            <li><strong>AWS Skill Builder</strong>: セキュリティコース（任意）</li>
+        </ul>
+    </div>
+    
+    <h2 id="section4">4. 最終成果物一覧</h2>
+    
+    <h3>ドキュメント</h3>
+    <ol>
+        <li><strong>IaC_CDK調査資料</strong> - 調査結果とサンプルコード</li>
+        <li><strong>BLEA ECSアプリケーションの詳細解析レポート</strong> - BLEA ECSサンプル解説</li>
+        <li><strong>セキュリティベストプラクティスレポート</strong> - セキュリティ設定集</li>
+        <li><strong>デプロイメント手順書</strong> - 構築手順書</li>
+        <li><strong>コスト分析レポート</strong> - コスト分析結果（1日稼働時）</li>
+        <li><strong>トラブルシューティングガイド</strong> - 問題解決集</li>
+        <li><strong>最終報告プレゼンテーション</strong> - 最終報告プレゼンテーション資料</li>
+    </ol>
+    
+    <h3>サンプルコード</h3>
+    <ol>
+        <li><strong>basic-infrastructure/</strong> - 基本的なCDKパターン</li>
+    </ol>
+    
+    <h3>プレゼンテーション</h3>
+    <ol>
+        <li><strong>中間報告資料</strong> - 12月時点の成果</li>
+        <li><strong>最終報告資料</strong> - 全体総括と成果</li>
+    </ol>
+    
+    <hr>
+    
+    <h2>改訂履歴</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>バージョン</th>
+                <th>日付</th>
+                <th>変更内容</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1.0</td>
+                <td>2025-08-21</td>
+                <td>初版作成</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
